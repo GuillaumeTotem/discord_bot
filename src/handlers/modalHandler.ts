@@ -80,6 +80,14 @@ export async function handleModalSubmit(interaction: ModalSubmitInteraction): Pr
 
     console.log(`Bug report created: ${bugId} by ${interaction.user.username}`);
 
+    // Send reminder message every 10 bugs
+    const bugNumber = parseInt(bugId.split('-')[1]);
+    if (bugNumber % 10 === 0) {
+      await channel.send({
+        content: '💡 **Reminder:** To create a bug report, type `/report-bug` and follow the instructions. Thank you for helping us improve!'
+      });
+    }
+
   } catch (error) {
     console.error('Error creating bug report:', error);
     await interaction.editReply({
