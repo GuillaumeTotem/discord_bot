@@ -3,11 +3,13 @@ import {
   GatewayIntentBits,
   REST,
   Routes,
-  ActivityType
+  ActivityType,
+  TextChannel
 } from 'discord.js';
 import { botConfig, validateConfig } from './config/botConfig';
 import { handleInteraction } from './handlers/interactionHandler';
 import { reportBugCommand } from './commands/reportBug';
+import { bugIdGenerator } from './utils/bugIdGenerator';
 
 async function main() {
   try {
@@ -28,6 +30,23 @@ async function main() {
       });
 
       await registerCommands();
+
+      // Send startup reminder message
+      try {
+        const guild = readyClient.guilds.cache.get(botConfig.guildId);
+        if (guild) {
+          const channel = guild.channels.cache.get(botConfig.bugReportsChannelId) as TextChannel;
+          if (channel) {
+            const currentCount = bugIdGenerator.getCurrentCount();
+            await channel.send({
+              content: `🟢 **Bot is online!** (Bug reports tracked: ${currentCount})\n💡 **Reminder:** To create a bug report, type \`/report-bug\` and follow the instructions. Thank you for helping us improve!`
+            });
+            console.log(`Sent startup message to bug reports channel (Current bug count: ${currentCount})`);
+          }
+        }
+      } catch (error) {
+        console.error('Error sending startup message:', error);
+      }
     });
 
     client.on('interactionCreate', handleInteraction);
