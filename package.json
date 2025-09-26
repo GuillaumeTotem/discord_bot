@@ -1,0 +1,28 @@
+{
+  "name": "discord-bug-reporter-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot for structured bug reporting with automatic thread creation",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc -w",
+    "deploy": "ts-node src/deploy-commands.ts"
+  },
+  "keywords": ["discord", "bot", "bug-reporter", "typescript"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
